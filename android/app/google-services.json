@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "339958146717",
+    "project_id": "kasrt-69e2c",
+    "storage_bucket": "kasrt-69e2c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:339958146717:android:2096be743f802392085674",
+        "android_client_info": {
+          "package_name": "com.example.fp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuypf6KEqozwmJ0rKzk1vRYAX1XRnDHcc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
