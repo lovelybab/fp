@@ -21,12 +21,8 @@ class _TambahTransaksiState extends State<TambahTransaksi> {
   bool _isLoading = false;
 
   final List<String> _kategoriList = [
-    'iuran',
-    'donasi',
-    'kegiatan',
-    'perbaikan',
-    'kebersihan',
-    'keamanan',
+    'Bantuan Operasional',
+    'Hibah',
     'lainnya',
   ];
 
