@@ -157,4 +157,111 @@ Future<void> simpanBuktiFoto(String iuranId, String base64Foto) async {
 Future<void> hapusWarga(String uid) async {
   await _firestore.collection('users').doc(uid).delete();
 }
+
+// ===== PROPOSAL PENGELUARAN =====
+Future<void> ajukanProposal(ProposalModel proposal) async {
+  await _firestore.collection('proposal').add(proposal.toMap());
+}
+
+Stream<List<ProposalModel>> getProposal() {
+  return _firestore
+      .collection('proposal')
+      .orderBy('tanggal_ajukan', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => ProposalModel.fromMap(doc.data(), doc.id))
+          .toList());
+}
+
+Stream<List<ProposalModel>> getProposalMenunggu() {
+  return _firestore
+      .collection('proposal')
+      .where('status', isEqualTo: 'menunggu')
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => ProposalModel.fromMap(doc.data(), doc.id))
+          .toList());
+}
+
+Future<void> responProposal(
+    String proposalId, String status, String? catatan) async {
+  await _firestore.collection('proposal').doc(proposalId).update({
+    'status': status,
+    'catatan_ketua': catatan,
+    'tanggal_respon': Timestamp.now(),
+  });
+}
+
+Future<void> prosesProposalKePengeluaran(ProposalModel proposal) async {
+  await _firestore.collection('transaksi').add({
+    'jenis': 'pengeluaran',
+    'jumlah': proposal.jumlah,
+    'keterangan': proposal.judul,
+    'kategori': proposal.kategori,
+    'created_by': proposal.createdBy,
+    'tanggal': Timestamp.now(),
+  });
+  await _firestore.collection('proposal').doc(proposal.id).update({
+    'status': 'selesai',
+  });
+}
+
+// ===== REIMBURSE =====
+Future<void> ajukanReimburse(ReimburseModel reimburse) async {
+  await _firestore.collection('reimburse').add(reimburse.toMap());
+}
+
+Stream<List<ReimburseModel>> getReimburseByUser(String userId) {
+  return _firestore
+      .collection('reimburse')
+      .where('user_id', isEqualTo: userId)
+      .orderBy('tanggal_ajukan', descending: true)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => ReimburseModel.fromMap(doc.data(), doc.id))
+          .toList());
+}
+
+Stream<List<ReimburseModel>> getReimburseMenunggu() {
+  return _firestore
+      .collection('reimburse')
+      .where('status', isEqualTo: 'menunggu')
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => ReimburseModel.fromMap(doc.data(), doc.id))
+          .toList());
+}
+
+Stream<List<ReimburseModel>> getReimburseDisetujui() {
+  return _firestore
+      .collection('reimburse')
+      .where('status', isEqualTo: 'disetujui')
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => ReimburseModel.fromMap(doc.data(), doc.id))
+          .toList());
+}
+
+Future<void> responReimburse(
+    String reimburseId, String status, String? catatan) async {
+  await _firestore.collection('reimburse').doc(reimburseId).update({
+    'status': status,
+    'catatan_ketua': catatan,
+    'tanggal_respon': Timestamp.now(),
+  });
+}
+
+Future<void> prosesReimburseSelesai(ReimburseModel reimburse) async {
+  await _firestore.collection('transaksi').add({
+    'jenis': 'pengeluaran',
+    'jumlah': reimburse.jumlah,
+    'keterangan': 'Reimburse: ${reimburse.judul} (${reimburse.namaPengaju})',
+    'kategori': 'reimburse',
+    'created_by': reimburse.userId,
+    'tanggal': Timestamp.now(),
+  });
+  await _firestore.collection('reimburse').doc(reimburse.id).update({
+    'status': 'selesai',
+  });
+}
 }
