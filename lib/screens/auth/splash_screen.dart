@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/auth_service.dart';
 import '../bendahara/dashboard_bendahara.dart';
 import '../warga/dashboard_warga.dart';
+import '../ketua_rt/dashboard_ketua_rt.dart';
 import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -54,10 +55,16 @@ class _SplashScreenState extends State<SplashScreen>
     } else {
       final userData = await AuthService().getUserData(user.uid);
       if (!mounted) return;
+
       if (userData?.role == 'bendahara') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const DashboardBendahara()),
+        );
+      } else if (userData?.role == 'ketua_rt') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const DashboardKetuaRT()),
         );
       } else {
         Navigator.pushReplacement(
