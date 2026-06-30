@@ -41,7 +41,7 @@ class AuthService {
     }
   }
 
-// REGISTER (warga atau bendahara pakai kode rahasia)
+// REGISTER (warga, bendahara, atau ketua RT pakai kode rahasia)
 Future<UserModel?> register({
   required String nama,
   required String email,
@@ -56,9 +56,12 @@ Future<UserModel?> register({
       password: password,
     );
 
-    // Cek kode rahasia bendahara
-    final role =
-        kodeRahasia == kodeRahasiaBendahara ? 'bendahara' : 'warga';
+    String role = 'warga';
+    if (kodeRahasia == 'KASRT2026') {
+      role = 'bendahara';
+    } else if (kodeRahasia == 'KETUA2026') {
+      role = 'ketua_rt';
+    }
 
     UserModel newUser = UserModel(
       uid: result.user!.uid,
@@ -79,7 +82,6 @@ Future<UserModel?> register({
     throw Exception(_getErrorMessage(e.toString()));
   }
 }
-
   // LOGOUT
   Future<void> logout() async {
     await _auth.signOut();
