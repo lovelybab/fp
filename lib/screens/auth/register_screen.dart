@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../bendahara/dashboard_bendahara.dart';
 import '../warga/dashboard_warga.dart';
+import '../ketua_rt/dashboard_ketua_rt.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -85,6 +86,15 @@ class _RegisterScreenState extends State<RegisterScreen>
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => const DashboardBendahara()),
+            );
+          }
+        } else if (user.role == 'ketua_rt') {
+          _showSnackBar('Berhasil daftar sebagai Ketua RT!', isError: false);
+          await Future.delayed(const Duration(seconds: 1));
+          if (mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => const DashboardKetuaRT()),
             );
           }
         } else {
@@ -270,7 +280,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12),
                                 child: Text(
-                                  'Khusus Bendahara',
+                                  'Khusus Pengurus RT',
                                   style: TextStyle(
                                       color: Colors.grey.shade400,
                                       fontSize: 11),
@@ -287,7 +297,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                             controller: _kodeRahasiaController,
                             obscureText: _obscureKode,
                             decoration: InputDecoration(
-                              labelText: 'Kode Rahasia Bendahara (opsional)',
+                              labelText: 'Kode Rahasia Pengurus (opsional)',
                               prefixIcon:
                                   const Icon(Icons.key_outlined, size: 20),
                               hintText: 'Kosongkan jika daftar sebagai warga',
@@ -305,7 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Masukkan kode rahasia jika kamu adalah bendahara RT',
+                            'Kode bendahara untuk akun pengurus kas, kode ketua RT untuk akun approval dana',
                             style: TextStyle(
                                 fontSize: 11, color: Colors.grey.shade400),
                           ),

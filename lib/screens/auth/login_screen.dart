@@ -3,6 +3,7 @@ import '../../services/auth_service.dart';
 import '../bendahara/dashboard_bendahara.dart';
 import '../warga/dashboard_warga.dart';
 import 'register_screen.dart';
+import '../ketua_rt/dashboard_ketua_rt.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -62,6 +63,9 @@ class _LoginScreenState extends State<LoginScreen>
         if (user.role == 'bendahara') {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (_) => const DashboardBendahara()));
+        } else if (user.role == 'ketua_rt') {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (_) => const DashboardKetuaRT()));
         } else {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (_) => const DashboardWarga()));
