@@ -3,6 +3,8 @@ import '../models/transaksi_model.dart';
 import '../models/iuran_model.dart';
 import '../models/pengumuman_model.dart';
 import '../models/user_model.dart';
+import '../models/proposal_model.dart';
+import '../models/reimburse_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
